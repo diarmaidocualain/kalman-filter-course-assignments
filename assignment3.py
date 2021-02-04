@@ -5,7 +5,7 @@ from sim.sim2d import sim_run
 options = {}
 options['FIG_SIZE'] = [8,8]
 
-options['DRIVE_IN_CIRCLE'] = True
+options['DRIVE_IN_CIRCLE'] = False
 # If False, measurements will be x,y.
 # If True, measurements will be x,y, and current angle of the car.
 # Required if you want to pass the driving in circle.
@@ -14,6 +14,7 @@ options['RECIEVE_INPUTS'] = False
 
 class KalmanFilter:
     def __init__(self):
+        self.prev_t = 0
         # Initial State. 
         # Size: n_states x 1
         # Populate with starting condition
@@ -24,7 +25,7 @@ class KalmanFilter:
 
         # Uncertainity Matrix
         # Size: n_states x n_states
-        # Polupate with initial uncertainty of each state
+        # Populate with initial uncertainty of each state
         self.P = np.matrix([[100, 0., 1., 0.],
                             [0., 100, 0., 1.],
                             [0., 0., 100, 0.],
@@ -55,6 +56,7 @@ class KalmanFilter:
                             [0.0, 1.0]])
 
         # Identity Matrix
+        # Size: n_states x n_states
         self.I = np.matrix([[1., 0., 0., 0.],
                             [0., 1., 0., 0.],
                             [0., 0., 1., 0.],
@@ -79,6 +81,8 @@ class KalmanFilter:
 
         self.P[0,0] = self.P[0,0] + 0.1
         self.P[1,1] = self.P[1,1] + 0.1
+        self.P[2,2] = self.P[2,2] + 0.1
+        self.P[3,3] = self.P[3,3] + 0.1
         
         return [self.x[0], self.x[1]]
 
