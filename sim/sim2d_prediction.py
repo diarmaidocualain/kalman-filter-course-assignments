@@ -7,7 +7,8 @@ import time
 
 
 def sim_run(options, KalmanFilter, light_state):
-    start = time.clock()
+    start = time.perf_counter()
+    # start = time.clock()
     # Simulator Options
     FIG_SIZE = options['FIG_SIZE'] # [Width, Height]
     ALLOW_SPEEDING = options['ALLOW_SPEEDING']
@@ -169,7 +170,8 @@ def sim_run(options, KalmanFilter, light_state):
         return car, light
 
 
-    print("Compute Time: ", round(time.clock() - start, 3), "seconds.")
+    print("Compute Time: ", round(time.perf_counter() - start, 3), "seconds.")
+
     # Animation.
     car_ani = animation.FuncAnimation(fig, update_plot, frames=range(1,len(t)),
                                     interval=100, repeat=False, blit=False)
